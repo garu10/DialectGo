@@ -97,7 +97,7 @@ const TopBar = ({
             ) : screenType === 'translator' ? (
               <>
                 <TouchableOpacity
-                  style={styles.iconCircle}
+                  style={styles.iconWrap}
                   onPress={onHistoryPress}
                 >
                   <Image source={require('../../assets/icons/nav/search_history_icon.png')} style={styles.topIcon} />
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6, // Space between glass buttons
+    gap: 4, // Space between glass buttons
   },
 glassBtn: {
   backgroundColor: 'transparent',
@@ -280,8 +280,8 @@ glassBtn: {
     alignItems: 'center',
   },
   topIcon: {
-    width: 42,
-    height: 42,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
   },
 

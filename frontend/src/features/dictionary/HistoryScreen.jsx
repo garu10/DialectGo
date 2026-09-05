@@ -70,10 +70,6 @@ export default function HistoryScreen() {
               </View>
             ) : (
               <View style={styles.emptyState}>
-                <Image 
-                  source={require('../../../assets/icons/nav/back_arrow.png')} 
-                  style={[styles.emptyIcon, { opacity: 0.2 }]} 
-                />
                 <Text style={styles.emptyText}>No recent searches yet.</Text>
               </View>
             )}
