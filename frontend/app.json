@@ -29,6 +29,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#FFFFFF",
+      "barStyle": "dark-content"
+    },
     "plugins": [
       "expo-router",
       "@react-native-community/datetimepicker",

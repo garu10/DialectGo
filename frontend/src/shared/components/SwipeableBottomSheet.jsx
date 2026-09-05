@@ -104,7 +104,13 @@ export default function SwipeableBottomSheet({ visible, onClose, children }) {
   // if (!visible && translateY._value === SCREEN_HEIGHT) return null;
 
   return (
-    <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
+    <Modal 
+      visible={visible} 
+      transparent 
+      animationType="none" 
+      onRequestClose={onClose}
+      statusBarTranslucent={true}
+    >
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={onClose}>
           <Animated.View
@@ -130,11 +136,6 @@ export default function SwipeableBottomSheet({ visible, onClose, children }) {
           
           {/* Inject content here */}
           {children}
-
-          {/* Scroll Indicator Hint */}
-          <View pointerEvents="none" style={styles.scrollHint}>
-            <Ionicons name="chevron-down" size={20} color="#9CA3AF" />
-          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
-    paddingBottom: 32, // Safe area padding
+    paddingBottom: 32, // Restored safe area padding for edge-to-edge
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
@@ -173,11 +174,5 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: '#D1D5DB', // gray-300
     borderRadius: 2,
-  },
-  scrollHint: {
-    position: 'absolute',
-    bottom: 8,
-    alignSelf: 'center',
-    opacity: 0.6,
   }
 });
