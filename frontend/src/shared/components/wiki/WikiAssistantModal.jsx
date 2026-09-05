@@ -24,7 +24,7 @@ export default function WikiAssistantModal({ visible, onClose, submissionId, sub
 
   // Animated values for keyboard handling
   const keyboardAnim = useRef(new Animated.Value(0)).current; // iOS modal offset
-  const paddingBottomAnim = useRef(new Animated.Value(Math.max(16, insets.bottom + 8))).current;
+  const paddingBottomAnim = useRef(new Animated.Value(Math.max(32, insets.bottom + 8))).current;
 
   useEffect(() => {
     if (visible && messages.length === 0) {
@@ -69,7 +69,7 @@ export default function WikiAssistantModal({ visible, onClose, submissionId, sub
   useEffect(() => {
     if (!visible) {
       keyboardAnim.setValue(0);
-      paddingBottomAnim.setValue(Math.max(16, insets.bottom + 8));
+      paddingBottomAnim.setValue(Math.max(32, insets.bottom + 8));
       inputFocusedRef.current = false;
     }
   }, [visible]);
@@ -88,7 +88,7 @@ export default function WikiAssistantModal({ visible, onClose, submissionId, sub
   const handleInputBlur = () => {
     inputFocusedRef.current = false;
     Animated.timing(paddingBottomAnim, {
-      toValue: Math.max(16, insets.bottom + 8),
+      toValue: Math.max(32, insets.bottom + 8),
       duration: Platform.OS === 'ios' ? 250 : 200,
       useNativeDriver: false,
     }).start();
@@ -186,7 +186,7 @@ export default function WikiAssistantModal({ visible, onClose, submissionId, sub
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal visible={visible} animationType="slide" transparent statusBarTranslucent={true}>
       <View style={styles.overlay}>
         {/* Tappable backdrop to dismiss keyboard */}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
