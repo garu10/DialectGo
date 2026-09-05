@@ -26,6 +26,8 @@ import activityRoutes from './routes/activity.route.js';
 import adminRoutes from './routes/admin.route.js';
 
 const app = express();
+// Trust the first proxy (e.g. Render, Heroku) so rate limiter can get the real client IP
+app.set('trust proxy', 1);
 const port = process.env.PORT || 5001;
 
 // ─── Core Middleware ─────────────────────────────────────────────────────────

@@ -18,7 +18,6 @@
         "EXPO_PUBLIC_PASSWORD_RESET_REDIRECT_URL": "http://dialectgo-colab.ngrok-free.dev/auth/ChangePassword",
         "EXPO_PUBLIC_SUPABASE_URL": "https://egalempypegfsegmomud.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_Q-n8s648TscunnWlP0Sefg_8ebPONMt",
-        "EXPO_PUBLIC_GROQ_API_KEY": "gsk_placeholder_key_for_security",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "441137798835-iq4tk93evffc0cu7e7jdgbola5qt9pro.apps.googleusercontent.com"
       }
     },

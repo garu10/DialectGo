@@ -82,13 +82,13 @@ const TopBar = ({
             {screenType === 'dictionary' ? (
               <>
                 <TouchableOpacity
-                  style={styles.iconCircle}
+                  style={styles.iconWrap}
                   onPress={onHistoryPress}
                 >
                   <Image source={require('../../assets/icons/nav/search_history_icon.png')} style={styles.historyIcon} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.iconCircle}
+                  style={styles.iconWrap}
                   onPress={onSaveWordsPress}
                 >
                   <Image source={require('../../assets/icons/nav/save_word_icon.png')} style={styles.starIcon} />
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12, // Space between glass buttons
+    gap: 6, // Space between glass buttons
   },
 glassBtn: {
   backgroundColor: 'transparent',
@@ -273,6 +273,12 @@ glassBtn: {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  iconWrap: {
+    padding: 0,
+    margin: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   topIcon: {
     width: 42,
     height: 42,
@@ -298,8 +304,8 @@ glassBtn: {
   },
 
   historyIcon: {
-    width: 42,
-    height: 42,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
   },
   starButton: {
@@ -321,8 +327,8 @@ glassBtn: {
   },
 
   starIcon: {
-    width: 42,
-    height: 42,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
   },
   notificationIcon: {
