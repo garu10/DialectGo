@@ -38,12 +38,14 @@ export default function GlobalWikiAssistantModal({ visible, onClose }) {
 
   // iOS: keyboard listeners for modal margin offset
   // Android: adjustResize handles it, no listeners needed
-  // iOS: keyboard listeners for modal margin offset
-  // Android: adjustResize handles it natively now that edgeToEdge is false
+  // iOS: keyboardWillShow, Android: keyboardDidShow handles modal offset natively due to edgeToEdge issues
   useEffect(() => {
-    if (Platform.OS !== 'ios' || !visible) return;
+    if (!visible) return;
 
-    const showSub = Keyboard.addListener('keyboardWillShow', (e) => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, (e) => {
       Animated.timing(keyboardAnim, {
         toValue: e.endCoordinates.height,
         duration: e.duration || 250,
@@ -51,7 +53,7 @@ export default function GlobalWikiAssistantModal({ visible, onClose }) {
       }).start();
     });
 
-    const hideSub = Keyboard.addListener('keyboardWillHide', () => {
+    const hideSub = Keyboard.addListener(hideEvent, () => {
       // Only animate down if input lost focus — prevents bounce during typing
       if (!inputFocusedRef.current) {
         Animated.timing(keyboardAnim, {
@@ -78,7 +80,7 @@ export default function GlobalWikiAssistantModal({ visible, onClose }) {
   const handleInputFocus = () => {
     inputFocusedRef.current = true;
     Animated.timing(paddingBottomAnim, {
-      toValue: 8,
+      toValue: Platform.OS === 'ios' ? 8 : Math.max(32, insets.bottom + 8),
       duration: Platform.OS === 'ios' ? 250 : 200,
       useNativeDriver: false,
     }).start();
@@ -92,14 +94,12 @@ export default function GlobalWikiAssistantModal({ visible, onClose }) {
       duration: Platform.OS === 'ios' ? 250 : 200,
       useNativeDriver: false,
     }).start();
-    // On iOS, also reset keyboard offset (in case keyboardWillHide already fired while focused)
-    if (Platform.OS === 'ios') {
-      Animated.timing(keyboardAnim, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: false,
-      }).start();
-    }
+    // Reset keyboard offset (in case keyboardHide already fired while focused)
+    Animated.timing(keyboardAnim, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
   };
 
   const handleSend = async () => {
@@ -195,9 +195,8 @@ export default function GlobalWikiAssistantModal({ visible, onClose }) {
 
         <Animated.View style={[
           styles.container,
-          // iOS: manually push modal up by keyboard height
-          // Android: adjustResize handles it naturally
-          Platform.OS === 'ios' && { marginBottom: keyboardAnim }
+          // Push modal up by keyboard height for both platforms
+          { marginBottom: keyboardAnim }
         ]}>
           {/* Header */}
           <View style={styles.header}>

@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backBtn: {
-    width: 64,
-    height: 64,
+    width: 44,
+    height: 44,
 
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,18 +86,18 @@ const styles = StyleSheet.create({
     shadowColor: '#421C00',
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
 
     // Android shadow
-    elevation: 5,
+    elevation: 3,
   },
 
   backIcon: {
-    width: 54,
-    height: 54,
+    width: 36,
+    height: 36,
 
     resizeMode: 'contain',
   },

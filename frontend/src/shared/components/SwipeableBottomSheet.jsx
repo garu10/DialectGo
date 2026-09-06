@@ -7,6 +7,8 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -111,7 +113,7 @@ export default function SwipeableBottomSheet({ visible, onClose, children }) {
       onRequestClose={onClose}
       statusBarTranslucent={true}
     >
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <TouchableWithoutFeedback onPress={onClose}>
           <Animated.View
             style={[
@@ -137,7 +139,7 @@ export default function SwipeableBottomSheet({ visible, onClose, children }) {
           {/* Inject content here */}
           {children}
         </Animated.View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

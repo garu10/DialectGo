@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StatusBar, ActivityIndicator, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Image, Keyboard, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +19,11 @@ export default function SubmissionDetailScreen({ id }) {
 
   // Animated padding for smooth transition when keyboard opens/closes
   const paddingBottomAnim = useRef(new Animated.Value(Math.max(insets.bottom, 12))).current;
+  const keyboardHeightAnim = useRef(new Animated.Value(0)).current;
   const [inputFocused, setInputFocused] = useState(false);
+  
+  // Custom precise keyboard handling for Android (bypasses KeyboardAvoidingView sticky bugs)
+  // Reverted: custom padding isn't perfectly aligning, relying on KeyboardAvoidingView with enabled toggle instead.
   
   const getAvatarSource = (avatarName) => {
     if (!avatarName || avatarName === 'null') return null;
@@ -104,6 +108,7 @@ export default function SubmissionDetailScreen({ id }) {
     <KeyboardAvoidingView 
       style={styles.container}
       behavior="padding"
+      enabled={Platform.OS === 'ios' ? true : inputFocused}
     >
       <StatusBar barStyle="dark-content" />
 
@@ -183,7 +188,7 @@ export default function SubmissionDetailScreen({ id }) {
         <View style={styles.commentInputWrapperFb}>
           <TextInput
             style={styles.commentInputFb}
-            placeholder="Share your thoughts, perspectives, or suggestions..."
+            placeholder="Share your thoughts..."
             placeholderTextColor="#9CA3AF"
             value={commentText}
             onChangeText={setCommentText}
