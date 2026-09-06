@@ -20,11 +20,15 @@ export default function MainIndex() {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
 
+      if (session) {
+        setCurrentScreen('home'); // Skip everything if they have a session
+        return; // Fast path!
+      }
+
+      // SLOW PATH: Only fetch saved profiles if they are not logged in
       const profiles = await getSavedProfiles();
 
-      if (session) {
-        setCurrentScreen('home'); // Skip AutoSplash if they have a session
-      } else if (profiles && profiles.length > 0) {
+      if (profiles && profiles.length > 0) {
         setCurrentScreen('auth'); // Skip animations and go to Profile List
       } else {
         setCurrentScreen('intro-splash'); // First-time user, no profiles
