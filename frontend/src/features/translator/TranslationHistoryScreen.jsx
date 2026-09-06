@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, SectionList, StyleSheet, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, SectionList, StyleSheet, TouchableOpacity, ActivityIndicator, RefreshControl, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslationHistory } from '../../shared/hooks/translate/useTranslationHistory';
@@ -48,9 +48,12 @@ export default function TranslationHistoryScreen() {
         <View style={styles.container}>
             {/* Header */}
             <View style={styles.navigationRow}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-                    <Text style={styles.backButtonText}>Translate</Text>
+                <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} activeOpacity={0.7}>
+                    <Image 
+                        source={require('../../../assets/icons/nav/back_icon.png')} 
+                        style={styles.backIcon} 
+                        resizeMode="contain"
+                    />
                 </TouchableOpacity>
                 <Text style={styles.headerTitleAbsolute}>History</Text>
                 <TouchableOpacity onPress={onRefresh} style={styles.clearButton}>
@@ -112,8 +115,25 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: 16 },
     center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background },
     navigationRow: { marginTop: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 },
-    backButton: { flexDirection: 'row', alignItems: 'center', marginLeft: -4, zIndex: 1 },
-    backButtonText: { color: colors.textPrimary, fontSize: 17, marginLeft: 2 },
+    backBtn: {
+        width: 44,
+        height: 44,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        zIndex: 1,
+        shadowColor: '#421C00',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        elevation: 3,
+        marginLeft: -4,
+    },
+    backIcon: {
+        width: 36,
+        height: 36,
+        resizeMode: 'contain',
+    },
     headerTitleAbsolute: { position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 18, fontWeight: 'bold', color: colors.textPrimary, zIndex: 0 },
     clearButton: { zIndex: 1, paddingRight: 4 },
     clearText: { color: colors.textPrimary, fontSize: 17 },

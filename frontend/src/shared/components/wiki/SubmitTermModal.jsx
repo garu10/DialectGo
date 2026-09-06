@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, Modal,
-  StyleSheet, ScrollView, ActivityIndicator, KeyboardAvoidingView, Platform,
+  StyleSheet, ScrollView, ActivityIndicator, Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '../../api/supabase';
@@ -70,6 +70,7 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
   const [submissionType, setSubmissionType] = useState('Term');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const scrollViewRef = useRef(null);
 
   const isQuestion = submissionType === 'Question';
   const CATEGORIES = isQuestion ? QUESTION_CATEGORIES : TERM_CATEGORIES;
@@ -133,7 +134,7 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
 
   return (
     <SwipeableBottomSheet visible={visible} onClose={onClose}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View style={{ flexShrink: 1 }}>
         <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>
               {isQuestion ? 'Ask a Question' : 'Contribute a Term'}
@@ -143,7 +144,7 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
             </TouchableOpacity>
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+          <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
             {/* Type Toggle */}
             <View style={styles.typeToggle}>
               <TouchableOpacity
@@ -215,6 +216,7 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
               onChangeText={setTranslation}
               multiline={isQuestion}
               numberOfLines={isQuestion ? 3 : 1}
+              onFocus={() => setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100)}
             />
 
             {/* Usage Example */}
@@ -227,6 +229,7 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
               onChangeText={setUsageExample}
               multiline
               numberOfLines={3}
+              onFocus={() => setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100)}
             />
 
             {/* Sentiment Tag Dropdown */}
@@ -240,7 +243,11 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
               isSentiment={true}
             />
 
-            {/* Submit Button */}
+            <View style={{ height: 20 }} />
+          </ScrollView>
+
+          {/* Sticky Submit Button */}
+          <View style={styles.footerContainer}>
             <TouchableOpacity
               style={[styles.submitBtn, isSubmitting && styles.submitBtnDisabled]}
               onPress={handleSubmit}
@@ -253,10 +260,8 @@ export default function SubmitTermModal({ visible, onClose, onSuccess }) {
                 <Text style={styles.submitBtnText}>Submit Contribution</Text>
               )}
             </TouchableOpacity>
-
-            <View style={{ height: 30 }} />
-          </ScrollView>
-      </KeyboardAvoidingView>
+          </View>
+      </View>
     </SwipeableBottomSheet>
   );
 }
@@ -367,10 +372,16 @@ const styles = StyleSheet.create({
   },
   submitBtn: {
     backgroundColor: '#FBBF24',
-    paddingVertical: 16,
+    paddingVertical: 12,
     borderRadius: 14,
     alignItems: 'center',
-    marginTop: 28,
+  },
+  footerContainer: {
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#F3F4F6',
+    backgroundColor: '#FFFFFF',
+    marginTop: 8,
   },
   submitBtnDisabled: {
     opacity: 0.6,

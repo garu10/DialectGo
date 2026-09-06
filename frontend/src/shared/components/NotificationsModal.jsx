@@ -98,7 +98,7 @@ export default function NotificationsModal({ visible, onClose }) {
   );
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal visible={visible} animationType="slide" transparent statusBarTranslucent={true}>
       <View style={styles.modalOverlay}>
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.header}>
