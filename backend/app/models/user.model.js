@@ -1,6 +1,6 @@
 import { supabase, supabaseAdmin, getAuthClient } from '../config/db.js';
 import { createClient } from '@supabase/supabase-js';
-import { sendWelcomeEmail } from '../services/email.service.js';
+import { updateUser } from './user.model.js';
 
 const getAuthenticatedClient = (token) => {
   return createClient(
@@ -27,9 +27,6 @@ export const registerUser = async (data) => {
   if (result?.user?.identities && result.user.identities.length === 0) {
     throw new Error("This email is already registered.");
   }
-
-  // Send the customized Nodemailer welcome email
-  await sendWelcomeEmail(email, meta.firstName || 'User');
 
   // Explicitly sync additional metadata into the public.profiles table
   // because the Postgres trigger misses these non-standard camelCase keys.

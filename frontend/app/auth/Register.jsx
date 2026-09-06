@@ -109,12 +109,12 @@ export default function SignUp({ onSwitch, onSuccess, panHandlers }) {
       return;
     }
 
-    // 4. Network Connectivity Check
-    const netInfo = await NetInfo.fetch();
-    if (!netInfo.isConnected) {
-      showToast("No internet connection. Please check your network and try again.", "error", "Offline");
-      return;
-    }
+    // 4. Network Connectivity Check (Disabled to speed up registration and prevent emulator stalls)
+    // const netInfo = await NetInfo.fetch();
+    // if (!netInfo.isConnected) {
+    //   showToast("No internet connection. Please check your network and try again.", "error", "Offline");
+    //   return;
+    // }
 
     setErrors({});
     setLoading(true);
