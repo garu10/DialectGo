@@ -292,8 +292,8 @@ heroBeeContainer: {
 },
 
 heroBee: {
-  width: 150,
-  height: 220,
+  width: 120,
+  height: 180,
 },
 
 // RIGHT SIDE
@@ -373,7 +373,7 @@ wordBubbleArrow: {
 // WORD
 heroWord: {
   fontFamily: fonts.bold,
-  fontSize: 30,
+  fontSize: 24,
   color: colors.accent,
   textAlign: 'center',
   marginBottom: 4,
@@ -383,30 +383,31 @@ heroWord: {
 // TRANSLATION
 heroTranslation: {
   fontFamily: fonts.medium,
-  fontSize: 16,
+  fontSize: 14,
   color: colors.accentLight,
   textAlign: 'center',
   fontStyle: 'italic',
-  lineHeight: 21,
+  lineHeight: 18,
+  marginBottom: 4,
 },
 
 // DEFINITION
-heroWord: {
-  fontFamily: fonts.bold,
-  fontSize: 30,
-  color: colors.accent,
+heroDefinition: {
+  fontFamily: fonts.regular,
+  fontSize: 12,
+  color: colors.accentLight,
   textAlign: 'center',
   marginBottom: 4,
-  letterSpacing: -0.5,
+  lineHeight: 16,
 },
 
 // DETAILS
 heroDetails: {
   fontFamily: fonts.bold,
-  fontSize: 10.5,
+  fontSize: 10,
   color: colors.shadowGold,
   textDecorationLine: 'underline',
-  marginTop: 8,
+  marginTop: 4,
 },
 
 progressSectionHeader: {
