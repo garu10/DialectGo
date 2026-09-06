@@ -3,6 +3,7 @@ import { useProfileData } from '../hooks/profile/useProfileData';
 import { useProfileNetwork } from '../hooks/profile/useProfileNetwork';
 import { getUserRoleAndMode, getAuthSession } from '../services/profile/userService';
 import { supabase } from '../api/supabase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileContext = createContext();
 
@@ -33,6 +34,21 @@ export const ProfileProvider = ({ children }) => {
         return;
       }
 
+      // 1. INSTANT HYDRATION: Read from cache if available so UI doesn't say "User"
+      try {
+        const cachedStr = await AsyncStorage.getItem('dialectgo_saved_profiles_cache');
+        if (cachedStr) {
+          const cachedProfiles = JSON.parse(cachedStr);
+          const myProfile = cachedProfiles.find(p => p.user_id === session.user.id);
+          if (myProfile) {
+            profileData.hydrateProfileData(myProfile);
+          }
+        }
+      } catch (cacheErr) {
+        // ignore cache errors
+      }
+
+      // 2. BACKGROUND FETCH: Get fresh data from the server
       await Promise.all([
         profileData.fetchUserProfile(session.access_token),
         profileData.fetchStreak(session.access_token)

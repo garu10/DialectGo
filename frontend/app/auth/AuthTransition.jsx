@@ -18,6 +18,7 @@ import { endpoints } from '../../src/shared/api/client';
 import { styles } from '../../src/features/auth/styles/AuthTransitionStyles';
 import { useToast } from '../../src/shared/context/ToastContext';
 import { getSavedProfiles, loginWithSavedProfile } from '../../src/shared/services/profile/deviceProfileService';
+import { useProfileContext } from '../../src/shared/context/ProfileContext';
 import SavedProfileCard from '../../src/features/auth/components/SavedProfileCard';
 
 // FIXED IMPORTS: 
@@ -41,6 +42,7 @@ export default function AuthTransition() {
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
   const [isQuickLoggingIn, setIsQuickLoggingIn] = useState(false);
   const { showToast } = useToast();
+  const { hydrateProfileData } = useProfileContext();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -183,6 +185,11 @@ export default function AuthTransition() {
                 key={p.user_id}
                 profile={p}
                 onPress={async (profile) => {
+                  // Pre-hydrate the profile globally BEFORE starting the login request!
+                  if (hydrateProfileData) {
+                    hydrateProfileData(profile);
+                  }
+                  
                   setIsQuickLoggingIn(true);
                   const success = await loginWithSavedProfile(profile.user_id);
                   setIsQuickLoggingIn(false);

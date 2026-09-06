@@ -1,5 +1,6 @@
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { endpoints } from '../../api/client';
 import { getValidSession } from '../authService';
 import { supabase } from '../../api/supabase';
@@ -74,16 +75,36 @@ export const saveProfileToDevice = async ({ email, first_name, last_name, avatar
  */
 export const getSavedProfiles = async () => {
   try {
+    // 1. Instantly return cached profiles (Stale-While-Revalidate pattern)
+    const cachedData = await AsyncStorage.getItem('dialectgo_saved_profiles_cache');
+    
     const deviceId = await getDeviceId();
     const url = endpoints.DEVICE_PROFILES_GET(deviceId);
 
-    const response = await fetch(url, {
+    // 2. Fire the network request silently in the background
+    const fetchPromise = fetch(url, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-    });
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          AsyncStorage.setItem('dialectgo_saved_profiles_cache', JSON.stringify(result.data));
+        }
+        return result.success ? result.data : [];
+      })
+      .catch(err => {
+        console.error('Background profile sync failed:', err);
+        return [];
+      });
 
-    const result = await response.json();
-    return result.success ? result.data : [];
+    // 3. If we have cached data, return it immediately to unblock the UI!
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
+    // 4. If no cache exists (first ever app load), await the network request
+    return await fetchPromise;
   } catch (error) {
     console.error('Failed to get saved profiles:', error);
     return [];

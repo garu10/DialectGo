@@ -17,6 +17,15 @@ export const useProfileData = () => {
     setUserAvatar(availableAvatars[0].source);
   }, []);
 
+  const hydrateProfileData = useCallback((profile) => {
+    if (profile.first_name) setFirstName(profile.first_name);
+    if (profile.last_name) setLastName(profile.last_name);
+    if (profile.avatar_url) {
+      const matched = availableAvatars.find(a => a.name === profile.avatar_url);
+      if (matched) setUserAvatar(matched.source);
+    }
+  }, []);
+
   const fetchUserProfile = useCallback(async (accessToken) => {
     try {
       const result = await fetchUserProfileData(accessToken);
@@ -49,6 +58,6 @@ export const useProfileData = () => {
 
   return {
     firstName, lastName, userAvatar, streakCount, activeDays,
-    fetchUserProfile, fetchStreak, resetProfileData
+    fetchUserProfile, fetchStreak, resetProfileData, hydrateProfileData
   };
 };
